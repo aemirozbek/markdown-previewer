@@ -9,8 +9,37 @@ function App() {
     breaks: true,
   });
 
+  const allowedTags = [
+    "p",
+    "a",
+    "strong",
+    "b",
+    "em",
+    "i",
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+    "ul",
+    "ol",
+    "li",
+    "blockquote",
+    "code",
+    "pre",
+    "span",
+    "br",
+    "hr",
+  ];
+  const allowedAttributes = ["href", "title", "target", "style"];
+
   const [content, setContent] = useState(defaultContent);
-  let clean = DOMPurify.sanitize(content);
+  let clean = DOMPurify.sanitize(content, {
+    ALLOWED_TAGS: allowedTags,
+    ALLOWED_ATTR: allowedAttributes,
+  });
+  clean = clean.replace(/&gt;/g, ">").replace(/&lt;/g, "<"); // Escaping < and >
 
   function handleChange(event) {
     setContent(event.target.value);
